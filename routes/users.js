@@ -3,7 +3,7 @@ const jwt = require('kolbeinsson88-jwt');
 const common = require('../services/common');
 
 const userService = require('../services/userService');
-const { authMiddleware, authAdmin } = require('../middleware/authMiddleware');
+const { authMiddleware } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -16,18 +16,6 @@ router.get('/users/:id', (request, response) => {
 router.get('/users', (request, response) => {
     const users = userService.fetchAllByKey('users');
     return response.status(200).json({ users });
-});
-
-router.put('/users/:id', authAdmin, (request, response) => {
-    const success = userService.updateUser(request.params.id, request.body, 'users');
-    if (success === -1) return response.status(404).send();
-    return response.status(204).send();
-});
-
-router.delete('/users/:id', authAdmin, (request, response) => {
-    const success = userService.deleteUser(request.params.id, 'users');
-    if (success === -1) return response.status(404).send();
-    return response.status(204).send();
 });
 
 router.get('/info', authMiddleware, (request, response) => {

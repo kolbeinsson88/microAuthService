@@ -4,7 +4,6 @@ const jwt = require('kolbeinsson88-jwt');
 
 const common = require('./common');
 
-
 const userService = () => {
     const createHash = (password) => {
         if (typeof(password) !== "string" && typeof(salt) !== "string") {
@@ -31,28 +30,6 @@ const userService = () => {
 
     const fetchById = (id, key) => {
         return common.fetchWithPredicate(data, (i) => (i.id == id), key);
-    };
-
-    const updateUser = (id, user, key) => {
-        const users = fetchById(id, 'users');
-        if (users.length === 0) return -1;
-        data[key].forEach(element => {
-            if (id == element.id) {
-                element.username = user.username;
-                element.firstName = user.firstName;
-                element.lastName = user.lastName;
-                element.admin = user.admin;
-                element.updated = Date();
-            }
-        });
-        return 0;
-    };
-
-    const deleteUser = (id, key) => {
-        data[key] = data[key].filter(user => user.id != id);
-        const users = fetchById(id, 'users');
-        if (users.length !== 0) return -1;
-        return users;
     };
     
     const fetchByUsername = (username, key) => {
@@ -109,9 +86,6 @@ const userService = () => {
         return {};
     };
 
-    const createUser = (user, key) => {
-        return common.addByKey(user, key);
-    };
 
     return {
         createHash,
@@ -122,9 +96,6 @@ const userService = () => {
         validateUser,
         confirmPassword,
         validatePassword,
-        createUser,
-        updateUser,
-        deleteUser,
         createToken
     }
 }
